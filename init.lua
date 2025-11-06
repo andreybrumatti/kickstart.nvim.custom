@@ -1,3 +1,4 @@
+vim.loader.enable()
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
@@ -35,13 +36,20 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set('n', '<leader>w', ':w<CR>', { desc = 'Save file' })
+vim.keymap.set('i', 'jj', '<Esc>', { desc = 'Exit insert mode' })
+vim.keymap.set('n', 'j', 'k', { desc = 'Move up' })
+vim.keymap.set('n', 'k', 'j', { desc = 'Move down' })
+vim.keymap.set('v', 'j', 'k', { desc = 'Move up in visual mode' })
+vim.keymap.set('v', 'k', 'j', { desc = 'Move down in visual mode' })
+vim.keymap.set('n', '9', '^', { desc = 'Go to the beginning of the line' })
+vim.keymap.set('n', '0', '$', { desc = 'Go to the end of the line' })
+vim.keymap.set('v', '<C-j>', ":m '<-2<CR>gv=gv", { desc = 'Move selected block up (Ctrl)' })
+vim.keymap.set('v', '<C-k>', ":m '>+1<CR>gv=gv", { desc = 'Move selected block down (Ctrl)' })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
@@ -64,6 +72,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
     'tpope/vim-sleuth',
+    'matze/vim-move',
     require 'plugins.which-key',
     require 'plugins.telescope',
     require 'plugins.treesitter',
@@ -110,7 +119,3 @@ require('lazy').setup({
     },
   },
 })
-
---
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
