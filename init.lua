@@ -50,21 +50,6 @@ vim.keymap.set('n', '9', '^', { desc = 'Go to the beginning of the line' })
 vim.keymap.set('n', '0', '$', { desc = 'Go to the end of the line' })
 vim.keymap.set('v', '<C-j>', ":m '<-2<CR>gv=gv", { desc = 'Move selected block up (Ctrl)' })
 vim.keymap.set('v', '<C-k>', ":m '>+1<CR>gv=gv", { desc = 'Move selected block down (Ctrl)' })
--- vim.keymap.set('n', '<leader>c', 'gcc', { desc = 'Comment current line' })
--- vim.keymap.set('v', '<leader>c', 'gc', { desc = 'Comment selected block' })
--- vim.keymap.set('n', '<leader>u', 'gcu', { desc = 'Uncomment current line' })
--- vim.keymap.set('v', '<leader>u', 'gcu', { desc = 'Uncomment selected block' })
--- Comentar a linha atual com 'Ctrl + ;' no modo normal
--- vim.keymap.set('n', '<leader>c', 'gcc', { desc = 'Comment current line' })
-
--- -- Comentar um bloco de código no modo visual com '<leader>c'
--- vim.keymap.set('v', '<leader>c', 'gc', { desc = 'Comment selected block' })
-
--- -- Descomentar a linha atual com '<leader>u' no modo normal
--- vim.keymap.set('n', '<leader>u', 'gcu', { desc = 'Uncomment current line' })
-
--- -- Descomentar um bloco de código no modo visual com '<leader>u'
--- vim.keymap.set('v', '<leader>u', 'gcu', { desc = 'Uncomment selected block' })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
@@ -90,24 +75,18 @@ require('lazy').setup({
     'matze/vim-move',
     {
         'numToStr/Comment.nvim',
-        -- A configuração deve ocorrer AQUI
         config = function()
             require('Comment').setup({
-                -- Usamos '<leader>c' ou 'gc' como o prefixo de comentário
                 toggler = {
-                    line = '<leader>cc',  -- Mapeia Espaço + c + c
-                    block = '<leader>cb', -- Mapeia Espaço + c + b
+                    line = '<leader>cc', 
+                    block = '<leader>cb', 
                 },
-                -- Permite usar <leader>c + movimento (ex: <leader>ciw)
+
                 opleader = {
                     line = '<leader>c',
                     block = '<leader>b',
                 },
             })
-
-            -- Se você quiser mapear explicitamente para o modo visual, use:
-            -- vim.keymap.set("v", "<leader>c", "<Plug>(comment_toggle_linewise_visual)")
-
         end,
     },
     require 'plugins.which-key',
