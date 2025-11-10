@@ -1,4 +1,5 @@
 vim.loader.enable()
+vim.lsp.buf.format()
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
@@ -50,6 +51,15 @@ vim.keymap.set('n', '9', '^', { desc = 'Go to the beginning of the line' })
 vim.keymap.set('n', '0', '$', { desc = 'Go to the end of the line' })
 vim.keymap.set('v', '<C-j>', ":m '<-2<CR>gv=gv", { desc = 'Move selected block up (Ctrl)' })
 vim.keymap.set('v', '<C-k>', ":m '>+1<CR>gv=gv", { desc = 'Move selected block down (Ctrl)' })
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Voltar do terminal pro modo normal' })
+vim.keymap.set('n', '<A-S-f>', 'gg=G``', { desc = 'Auto identar todo o arquivo' })
+vim.keymap.set('v', '<Tab>', '>gv', { desc = 'Indentar seleção e manter seleção (visual)' })
+vim.keymap.set('v', '<S-Tab>', '<gv', { desc = 'Desindentar seleção e manter seleção (visual)' })
+vim.keymap.set('n', '<Tab>', '>>', { desc = 'Indentar linha (normal)' })
+vim.keymap.set('n', '<S-Tab>', '<<', { desc = 'Desindentar linha (normal)' })
+vim.keymap.set('n', 'w', 'b', { desc = 'Mover uma palavra para a esquerda' })
+vim.keymap.set('i', '<A-w>', '<C-o>b', { desc = 'Mover uma palavra para a esquerda (Alt+w)' })
+vim.keymap.set('i', '<A-e>', '<C-o>w', { desc = 'Mover uma palavra para a direita (Alt+e)' })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
@@ -89,8 +99,12 @@ require('lazy').setup({
             })
         end,
     },
-    require 'plugins.which-key',
-    require 'plugins.telescope',
+    {
+        "folke/which-key.nvim",
+        opts = {}, 
+        priority = 1000,
+    },
+    { "nvim-telescope/telescope.nvim", tag = '0.1.5', dependencies = { 'nvim-lua/plenary.nvim' } },
     require 'plugins.treesitter',
     require 'plugins.lsp',
     require 'plugins.conform',
