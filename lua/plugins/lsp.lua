@@ -92,17 +92,58 @@ return {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
         pyright = {},
         rust_analyzer = {},
-        ts_ls = {},
-        cssmodules_ls = {},
-        docker_compose_language_service = {},
+
+        ts_ls = {
+          filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+          settings = {
+            javascript = {
+              inlayHints = {
+                includeInlayParameterNameHints = "all",
+                includeInlayVariableTypeHints = true,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayFunctionTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+            typescript = {
+              jsx = 'react',
+              inlayHints = {
+                includeInlayParameterNameHints = "all",
+                includeInlayVariableTypeHints = true,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayFunctionTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+          },
+        }, -- FIM ts_ls
+
+        -- CONSOLIDADO: CONFIGURAÇÃO ESLINT
+        eslint = {
+          filetypes = { 
+            "javascript", 
+            "javascriptreact", 
+            "typescript", 
+            "typescriptreact", 
+            "vue",
+            "html", 
+            "markdown"
+          },
+          settings = {}
+        }, -- FIM eslint
+
+        cssmodules_ls = {}, 
+        docker_compose_language_service = {}, 
         dockerls = {},
         intelephense = {},
         tailwindcss = {},
         svelte = {},
+
         html = {
+          -- MOVENDO filetypes para cá (conforme a sugestão de limpeza)
+          filetypes = { 'html', 'blade' }, 
           init_options = {
             provideFormatter = false,
           },
@@ -124,6 +165,9 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua',
+        'typescript-language-server',
+        'eslint_d',
+        'tailwindcss-language-server',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

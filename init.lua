@@ -11,7 +11,7 @@ vim.opt.showmode = false
 vim.wo.wrap = false
 
 vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
+    vim.opt.clipboard = 'unnamedplus'
 end)
 
 vim.opt.breakindent = true
@@ -60,22 +60,25 @@ vim.keymap.set('n', '<S-Tab>', '<<', { desc = 'Desindentar linha (normal)' })
 vim.keymap.set('n', 'w', 'b', { desc = 'Mover uma palavra para a esquerda' })
 vim.keymap.set('i', '<A-w>', '<C-o>b', { desc = 'Mover uma palavra para a esquerda (Alt+w)' })
 vim.keymap.set('i', '<A-e>', '<C-o>w', { desc = 'Mover uma palavra para a direita (Alt+e)' })
+vim.keymap.set('n', '<C-q>', '<cmd>NvimTreeToggle<CR>', { desc = 'Toggle File Explorer (Ctrl+b)' })
+vim.keymap.set('n', '<leader><leader>', '<cmd>Telescope find_files<CR>', { desc = '[F]ind [F]iles' })
+vim.keymap.set('n', '<leader>ff', '<cmd>Telescope oldfiles<CR>', { desc = '[ ] Find Recent Files (MRU)' })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
+    desc = 'Highlight when yanking (copying) text',
+    group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+    callback = function()
+        vim.highlight.on_yank()
+    end,
 })
 
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
-  if vim.v.shell_error ~= 0 then
-    error('Error cloning lazy.nvim:\n' .. out)
-  end
+    local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
+    local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
+    if vim.v.shell_error ~= 0 then
+        error('Error cloning lazy.nvim:\n' .. out)
+    end
 end ---@diagnostic disable-next-line: undefined-field
 
 vim.opt.rtp:prepend(lazypath)
@@ -83,6 +86,47 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
     'tpope/vim-sleuth',
     'matze/vim-move',
+    {
+        'L3MON4D3/LuaSnip',
+        dependencies = { 'rafamadriz/friendly-snippets' },
+    },
+    {
+        'nvim-tree/nvim-tree.lua',
+        version = '*',
+        lazy = false,
+        dependencies = {
+            'nvim-tree/nvim-web-devicons',
+        },
+
+        config = function()
+            require('nvim-tree').setup {
+                view = {
+                    width = 30,
+                },
+                renderer = {
+                    icons = {
+                        show = {
+                            folder = true,
+                            file = true,                        },
+                    },
+                },
+                update_focused_file = {
+                    enable = true,
+                    update_root = true,
+                    ignore_list = {},
+                },
+
+                actions = {
+                    open_file = {
+                        quit_on_open = true,
+                    },
+                },
+                git = {
+                    enable = true,
+                },
+            }
+        end,
+    },
     {
         'numToStr/Comment.nvim',
         config = function()
@@ -122,30 +166,30 @@ require('lazy').setup({
     require 'plugins.supermaven',
     require 'plugins.gitsigns',
 
-  -- {
-  --   'github/copilot.vim',
-  -- },
-  -- require 'plugins.comment',
-  -- require 'plugins.laravel',
-  -- require 'plugins.lint',
+    -- {
+    --   'github/copilot.vim',
+    -- },
+    -- require 'plugins.comment',
+    -- require 'plugins.laravel',
+    -- require 'plugins.lint',
 
-  { import = 'custom.plugins' },
+    { import = 'custom.plugins' },
 }, {
-  ui = {
-    icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
-    },
-  },
-})
+        ui = {
+            icons = vim.g.have_nerd_font and {} or {
+                cmd = '⌘',
+                config = '🛠',
+                event = '📅',
+                ft = '📂',
+                init = '⚙',
+                keys = '🗝',
+                plugin = '🔌',
+                runtime = '💻',
+                require = '🌙',
+                source = '📄',
+                start = '🚀',
+                task = '📌',
+                lazy = '💤 ',
+            },
+        },
+    })
