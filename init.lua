@@ -41,7 +41,9 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 vim.keymap.set('n', '<leader>w', ':w<CR>', { desc = 'Save file' })
-vim.keymap.set('i', 'jj', '<Esc>', { desc = 'Exit insert mode' })
+vim.keymap.set('i', 'jj', function()
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>:w<CR>', true, true, true), 'n', false)
+end, { desc = 'Exit insert mode and Save' })
 vim.keymap.set('n', 'j', 'k', { desc = 'Move up' })
 vim.keymap.set('n', 'k', 'j', { desc = 'Move down' })
 vim.keymap.set('v', 'j', 'k', { desc = 'Move up in visual mode' })
@@ -99,7 +101,7 @@ require('lazy').setup({
         config = function()
             require('nvim-tree').setup {
                 view = {
-                    width = 30,
+                    width = 40,
                 },
                 renderer = {
                     icons = {
